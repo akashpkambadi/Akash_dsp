@@ -1,0 +1,23 @@
+clc;
+clf;
+close all;
+clear all;
+n1 = input("Starting point of Signal: ");
+n2 = input("End point of Signal: ");
+sam_points = -n1:1:n2;
+amp_1 = zeros(1,n1+1);
+for (i=1:n2)
+amp_2(i)=(i^2)/2;
+end
+amp = [amp_1, amp_2];
+title("Parabolic Signal");
+subplot(211);
+stem(sam_points,amp);
+xlabel("Samples");
+ylabel("Amplitude");
+grid on;
+subplot(212);
+plot(sam_points,amp);
+xlabel("Samples");
+ylabel("Amplitude");
+grid on;
