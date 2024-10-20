@@ -1,0 +1,223 @@
+1. Periodicity Property
+
+clc;
+clear all;
+close all;
+disp('1. Periodicity Property')
+x=input('Enter the sequence : ');
+N=length(x);
+x=[x x];
+for( k=1:2*N)
+y(k)=0;
+for (n=1:N)
+y(k)=y(k)+exp(-1i*2*pi*(k-1)*(n-1)/N)*x(n);
+end
+end
+disp('DFT of input in 1st period (1 to N): ');
+disp((y(1:N))');
+disp('DFT of input in 2nd period (N+1 to 2N): ');
+disp((y(N+1:2*N))');
+if (abs(y(1:N)-y(N+1:2*N))<10^(-10))
+disp('Periodicity Property of DFT is verified');
+else
+disp('Periodicity Property of DFT is not verified');
+end
+
+2. Linearity Property
+
+clc;
+clear all;
+close all;
+disp('2. Linearity Property')
+clear all;
+x1=input('Enter the 1st sequence : ');
+x2=input('Enter the 2nd sequence : ');
+a=input('Enter 1st scalar value a : ');
+b=input('Enter 2nd scalar value b : ');
+y1=dft(x1);
+y2=dft(x2);
+Y1=(dft(a*x1+b*x2))'
+Y2=(a*y1+b*y2)'
+if (abs(Y1-Y2)<10^(-10))
+disp('Linearity property of DFT is verified');
+else
+disp('Linearity property of DFT is not verified');
+end
+
+
+3. Time Reversal Property
+
+clc;
+clear all;
+close all;
+disp('3. Time Reversal Property')
+clear all;
+x1=input('Enter the sequence : ');
+N=length(x1);
+y1=dft(x1);
+n=1:N-1;
+x2(1)=x1(1);
+x2(n+1)=x1(N-(n-1));
+y2=dft(x2);
+y(1)=y1(1);
+y(n+1)=y1(N-(n-1));
+disp('DFT of x(n) : ');
+disp(y1');
+disp('DFT of x(N-n) : ');
+disp(y2');
+disp('DFT of x(N-n) by property : ');
+disp(y');
+if (abs(y-y2)<10^(-10))
+disp('Time reversal property of DFT is verified');
+else
+disp('Time reversal property of DFT is not verified');
+end
+
+
+4. Time Shifting Property
+
+clc;
+clear all;
+close all;
+disp('4. Time Shifting Property')
+clear all;
+x1=input('Enter the sequence : ');
+m=input('Enter the shift m : ');
+N=length(x1);
+y1=dft(x1);
+x2=circshift(x1',m);
+y2=dft(x2);
+for (k=1:N)
+y(k)=y1(k)*exp(-1i*2*pi*(k-1)*m/N);
+end
+disp('DFT of x(n) : ');
+disp(y1');
+disp('DFT of x(n-m) by direct method : ');
+disp(y2');
+disp('DFT of x(n-m) by property : ');
+disp(y');
+if (abs(y-y2)<10^(-10))
+disp('Time shifting property of DFT is verified');
+else
+disp('Time shifting property of DFT is not verified');
+end
+
+
+5. Frequency Shifting Property
+
+clc;
+clear all;
+close all;
+disp('5. Frequency Shifting property');
+clear all;
+x1=input('Enter the sequence : ');
+m=input('Enter the shift m : ');
+N=length(x1);
+y1=dft(x1);
+for (n=1:N)
+x2(n)=exp(1i*2*pi*m*(n-1)/N)*x1(n);
+end
+y2=dft(x2);
+y=circshift(y1',m);
+disp('DFT of x(n) : ');
+disp(y1');
+disp('DFT of e^(j2pi*kn/N)*x(n-m) by direct method : ');
+disp(y2');
+disp('DFT of e^(j2pi*kn/N)*x(n-m) by property : ');
+disp(y);
+if (abs(y'-y2)<10^(-10))
+disp('Frequency shifting property of DFT is verified');
+else
+disp('Frequency shifting property of DFT is not verified');
+end
+
+
+6. Circular Convolution Property
+
+clc;
+clear all;
+close all;
+disp('6. Circular Convolution Property');
+x1=input('Enter the 1st sequence : ');
+x2=input('Enter the 2nd sequence : ');
+N=length(x1);
+M=length(x2);
+x1=[x1 zeros(1,M-N)];
+x2=[x2 zeros(1,N-M)];
+x=cconv(x1,x2,max(N,M));
+y1=dft(x1);
+y2=dft(x2);
+y=y1.*y2;
+Y=dft(x);
+disp('DFT of x1 : ');
+disp(y1');
+disp('DFT of x2 : ');
+disp(y2');
+disp('DFT of convolution of x1 and x2 : ');
+disp(Y');
+disp('DFT of convolution of x1 and x2 by property : ');
+disp(y');
+if (abs(y-Y)<10^(-10))
+disp('Circular Convolution property of DFT is verified');
+else
+disp('Circular Convolution property of DFT is not verified');
+end
+
+7. Multiplication (Modulation) Property
+
+clc;
+clear all;
+close all;
+disp('7. Multiplication (Modulation) property');
+x1=input('Enter the 1st sequence : ');
+x2=input('Enter the 2nd sequence : ');
+N=length(x1);
+M=length(x2);
+x1=[x1 zeros(1,M-N)];
+x2=[x2 zeros(1,N-M)];
+x=x1.*x2;
+y1=dft(x1);
+y2=dft(x2);
+y=cconv(y1,y2,max(N,M))/N;
+Y=dft(x);
+disp('DFT of x1 : ');
+disp(y1');
+disp('DFT of x2 : ');
+disp(y2');
+disp('DFT of multiplication of x1 and x2 : ');
+disp(Y');
+disp('DFT of multiplication of x1 and x2 by property : ');
+disp(y');
+if (abs(y-Y)<10^(-10))
+disp('Multiplication property of DFT is verified');
+else
+disp('Multiplication property of DFT is not verified');
+end
+
+
+8. Parseval’s Theorem
+
+clc;
+clear all;
+close all;
+disp('8. Parseval’s Theorem');
+x=input('Enter the sequence : ');
+N=length(x);
+y=dft(x);
+X=sum((abs(x)).^2);
+Y=sum((abs(y)).^2)/N;
+disp('DFT of x : ');
+disp(y');
+disp('Sum of |x|^2 : ');
+disp(X);
+disp('1/N * Sum of |DFT(x)|^2 : ');
+disp(Y);
+if (X==Y)
+disp('Parseval’s Theorem of DFT is verified');
+else
+disp('Parseval’s Theorem of DFT is not verified');
+end
+
+
+
+
