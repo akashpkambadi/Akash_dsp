@@ -1,0 +1,40 @@
+clc;
+clf;        %close the figure window
+close all;  %closes all window
+clear all;  %clears all vars, functs from workspace
+
+x = input("Enter x values: ");  % [1 1 0 0}
+N = length(x);
+
+X = [];
+
+disp("DFT");
+for (k=1 : N)
+    sum = 0;
+    for(n=1 : N)
+        sum = sum + x(n)*exp((-j*2*pi*(n-1)*(k-1))/N);    %more efficiency   
+end
+    X = [X sum];
+end
+disp(X);
+
+disp("Verification");
+y = fft(x,N);
+disp(y);
+
+
+disp("IDFT");
+x_inv = [];
+for (n=1 : N)
+    sum = 0;
+    for(k=1 : N)
+        sum = sum + (X(k)*exp((j*2*pi*(n-1)*(k-1))/N))/N; %more efficiency, replace i, j by 1i
+    end
+    x_inv = [x_inv sum];
+end
+                                                             3
+disp(x_inv);
+
+disp("Verification");
+y_inv = ifft(X,N);
+disp(y_inv);
